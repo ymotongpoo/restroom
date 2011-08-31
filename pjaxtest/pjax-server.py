@@ -12,10 +12,13 @@ def index():
 def pjax_index(query):
   p = {}
   if "X-PJAX" in request.headers and query:
-    return "you requested '%s' in pjax" % query
+    content = "you requested '%s' in pjax" % query
+    p['placeholder'] = content
+    return render_template("container.html", p=p)
   else:
     p['placeholder'] = "you requested '%s' in static" % query
-    return render_template("index.html", p=p, )
+    p['static'] = True
+    return render_template("index.html", p=p)
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=8888)
