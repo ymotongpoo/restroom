@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>PJAX test</title>
+  </style>
+  <script src="/static/js/jquery-1.6.2.min.js" type="text/javascript"></script>
+  <script src="/static/js/jquery.pjax.js" type="text/javascript"></script>
+  <script>
+  $(document).ready(function() {
+    $('a.js-pjax').click(function(event){
+      event.preventDefault();
+    });
+    $("a.js-pjax").pjax("#main");
+  });
+
+  </script>
+</head>
+<body>
+
+<ul>
+  <li><a href="/pjax/hello-pjax" data-pjax="main" class="js-pjax">with pjax</a>
+  <li><a href="/pjax/static">without pjax</a>
+</ul>
+
+<div id="dummy">
+  {% if p.placeholder %}
+  <p>This is dummy container for static request</p>
+  {% endif %}
+</div>
+<div id="main">
+  {% if p.placeholder  %}
+    {{ p.placeholder }}
+  {% endif %}
+</div>
+
+</body>
+</html>
