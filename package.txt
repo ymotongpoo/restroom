@@ -1,0 +1,12 @@
+Flask==0.6.1
+Jinja2==2.5.5
+PyXML==0.8.4
+PyYAML==3.09
+Pygments==1.3.1
+Werkzeug==0.6.2
+distribute==0.6.19
+libxml2-python==2.6.21
+pyPdf==1.13
+virtualenv==1.6.4
+virtualenvwrapper==2.8
+wsgiref==0.1.2
