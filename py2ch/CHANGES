@@ -1,0 +1,20 @@
+.. -*- coding: utf-8 -*-
+
+py2ch changelog
+===============
+
+Version 0.0.3 (2011/01/21)
+-------------------------
+
+- top level class BBS2ch can load category and board data from bbsmenu.html
+
+
+Version 0.0.2 (2011/01/16)
+-------------------------
+
+- each board can load data from subject.txt
+
+Version 0.0.1 (2011/01/15)
+--------------------------
+
+- first release
