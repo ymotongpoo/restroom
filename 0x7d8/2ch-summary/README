@@ -1,0 +1,6 @@
+mod_rewrite setteing
+
+EewriteRule ^/dokuo/$ /2ch-summary/2ch_feed_reader.py/entry 
+RewriteRule ^/dokuo/(.*)\.(js|css)$ /2ch-summary/$1
+RewriteRule ^/dokuo/(.*)/(.*)$ /2ch-summary/2ch_feed_reader.py/entry?sort=$1&offset=$2
+RewriteRule ^/dokuo/(.*)$ /2ch-summary/2ch_feed_reader.py/entry?sort=$1 [L]

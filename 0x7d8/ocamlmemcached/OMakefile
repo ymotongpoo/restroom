@@ -1,0 +1,84 @@
+.PHONY: all install clean
+
+# traverse the subdirs except $(dirs)
+Subdirs_except(dirs) =
+ #println(PWD: $(shell pwd))
+
+ # need to export since .SUBDIRS is evaluated in the global scope
+ export VISIT_SUBDIRS
+
+ sub_omakefiles = $(glob i, */OMakefile)
+ subdirs = $(sub_omakefiles.map $(dirname))
+
+ VISIT_SUBDIRS=$(set-diff $(subdirs), $(dirs))
+
+ # printing requires $(string ...) to convert arrays to strings
+ #println(SUBDIRS: $(string $(VISIT_SUBDIRS)))
+
+ # The rule
+ .SUBDIRS: $(VISIT_SUBDIRS)
+
+# traverse all the subdirs
+Subdirs() =
+ Subdirs_except($(array))
+
+Subdirs()
+
+
+#
+# This project requires ocamlfind (default - false).
+#
+USE_OCAMLFIND = true
+
+OCAMLPACKS[] =
+  bitstring
+  bitstring.syntax
+
+if $(not $(OCAMLFIND_EXISTS))
+  eprintln(This project requires ocamlfind, but is was not found.)
+  eprintln(You need to install ocamlfind and run "omake --configure".)
+  exit 1
+
+#
+# Include path
+#
+# OCAMLINCLUDES +=
+
+#
+# Various options
+#
+OCAMLFLAGS    += -warn-error x
+OCMALFINDFLAGS = -syntax bitstring.syntax
+# OCAMLCFLAGS   +=
+#OCAMLOPTFLAGS += -inline 10
+# OCAML_LINK_FLAGS +=
+# OCAML_BYTE_LINK_FLAGS +=
+# OCAML_NATIVE_LINK_FLAGS +=
+NATIVE_ENABLED = true
+BYTE_ENABLED = false
+
+################################################
+# Generated files
+#
+# Workaround for the fact that ocamldep does not pay attention to .mll
+# and .mly files.
+#
+# OCamlGeneratedFiles(parser.ml lexer.ml)
+
+################################################
+# Build an OCaml program
+#
+
+FILES[] =
+  ocamlmemcached
+
+PROGRAM = ocamlmemcached
+# OCAML_LIBS +=
+# OCAML_CLIBS +=
+OCAML_OTHER_LIBS += str
+# OCAML_LIB_FLAGS +=
+#
+.DEFAULT: $(OCamlProgram $(PROGRAM), $(FILES))
+
+clean:
+  rm -f $(filter-proper-targets $(ls R, .))

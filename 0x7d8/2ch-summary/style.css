@@ -1,0 +1,113 @@
+/* encoding: utf-8; mode: css-mode */
+
+a {
+	text-decoration: none;
+}
+
+p {
+	margin: 5px;
+}
+
+a img {
+	border: none;
+}
+
+h3 {
+	border: solid;
+    border-width: 0px 0px 1px 6px;
+    padding: 3px;
+    border-color: #ffa500;
+}
+
+div.ranking {
+	border: 0px;
+	width: 750px;
+	margin: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+div.ranking a:link {
+	color: #0000cc;
+}
+
+div.ranking a.entry:visited {
+	color: #aaaaaa;
+}
+
+div.ranking a.site:visited {
+	color: #440044;
+}
+
+div.ranking a:hover {
+	color: #ee0000;
+}
+
+table {
+	width: 750px;
+	border-collapse: collapse;
+	border: 1px #000000 solid;
+}
+
+td {
+	padding: 2px;
+	border-collapse: collapse;
+	border: 1px #999999 solid;
+}
+
+th {
+	padding: 5px;
+	border-collapse: collapse;
+	border: 1px #999999 solid;
+	white-space: nowrap;
+	color: #dddddd;
+	background-color: #555555;
+}
+
+th#updated {
+	width: 80px;
+}
+
+th#user {
+	width: 20px;
+}
+
+th#site {
+	width: 120px;
+}
+
+div.info {
+	border: 0px;
+	width: 750px;
+	margin: 5px;
+	padding-left: 10px;
+}
+
+div.index {
+	font-size: normal;
+}
+
+div.header {
+	border: 0px;
+	width: 750px;
+	margin: 5px;
+	padding-left: 10px;
+	color: #444444;
+}
+
+div.header a:link, a:visited {
+	color: #440000;
+}
+
+div.header a:hover {
+	color: #ee0000;
+}
+
+p#site-title {
+	font-size: 36px;
+	align: right;
+}
+
+a#title-link:link, a#title-link:visited {
+	color: #440000 !important;
+}

@@ -1,0 +1,24 @@
+/* encoding: utf-8; mode: css-mode */
+
+a {
+	text-decoration: none;
+}
+
+a img {
+	border: none;
+}
+
+h3 {
+	border: solid;
+    border-width: 0px 0px 1px 6px;
+    padding: 3px;
+    border-color: #ffa500;
+}
+
+div.ranking {
+	border: 1px solid gray;
+	width: 600px;
+	margin: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+}

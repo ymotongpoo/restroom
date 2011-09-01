@@ -1,0 +1,123 @@
+<!-- -*- coding: utf-8 -*- -->
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:py="http://genshi.edgewall.org/"
+	  lang="ja">
+  <head>
+	<meta name="author" content="ymotongpoo -- http://d.hatena.ne.jp/ymotongpoo/"/>
+	<link rel="stylesheet" href="/dokuo/style.css" type="text/css" media="screen"/>
+	<link rel="javascript" href="/dokuo/external.js" type="text/javascript" />
+	<title>毒男アンテナ ('A`)</title>
+  </head>
+  <body>
+	<!-- ヘッダ -->
+	<div class="header">
+	  <p id="site-title">
+		<a href="http://ymotongpoo.dip.jp/dokuo/" id="title-link">
+		  毒男アンテナ ('A`)
+		</a>
+	  </p>
+	  <p>
+		<a href="/dokuo/updated">更新順</a>
+		|
+		<a href="/dokuo/user">はてブ順</a>
+		|
+		<a href="/dokuo/hot">直近1週間</a>
+	  </p>
+	</div>
+
+	<div class="ranking">
+	  <h3>${navi.title}</h3>
+	  <!-- インデックス -->
+	  <div class="index">
+		<py:if test="navi.current &gt; 1">
+		  <a href="${navi.prev}">&lt;&lt;PREV</a>
+		</py:if>
+		<py:for each="i in index">
+		  <py:choose test="i.num">
+			<py:when test="navi.current">
+			  ${i.num}&nbsp;
+			</py:when>
+			<py:otherwise>
+			   <a href="${i.link}">${i.num}</a>&nbsp;
+			</py:otherwise>
+		  </py:choose>
+		</py:for>
+		<py:if test="navi.current &lt; 10">
+		  <a href="${navi.next}">NEXT&gt;&gt;</a>
+		</py:if>
+	  </div>
+
+	  <!-- エントリ一覧 -->
+	  <table>
+		<tr>
+		  <th id="updated">更新時間</th>
+		  <th id="title">タイトル</th>
+		  <th id="user">はてブ</th>
+		  <th id="site">サイト</th>
+		</tr>
+		<tr py:for="e in entries">
+		  <td>${e.updated}</td>
+		  <td><a href="${e.url}" rel="external" class="entry">${e.title}</a></td>
+		  <td><a href="${e.url}" rel="external"><img src="http://b.hatena.ne.jp/entry/image/small/${e.url}" alt=""/></a></td>
+		  <td><a href="${e.site_url}" class="site">${e.site_title}</a></td>
+		</tr>
+	  </table>
+
+	  <!-- インデックス -->
+	  <div class="index">
+		<py:if test="navi.current &gt; 1">
+		  <a href="${navi.prev}">&lt;&lt;PREV</a>
+		</py:if>
+		<py:for each="i in index">
+		  <py:choose test="i.num">
+			<py:when test="navi.current">
+			  ${i.num}&nbsp;
+			</py:when>
+			<py:otherwise>
+			   <a href="${i.link}">${i.num}</a>&nbsp;
+			</py:otherwise>
+		  </py:choose>
+		</py:for>
+		<py:if test="navi.current &lt; 10">
+		  <a href="${navi.next}">NEXT&gt;&gt;</a>
+		</py:if>
+	  </div>
+
+	</div>
+
+	<!-- サイトについて -->
+	<div class="info">
+	  <h3>このサイトについて</h3>
+	  <p>
+		PythonによるWebサービス作成の習作です。至らない点は是非ご連絡ください。<br/>
+		またサイトの登録に関してもご連絡いただければ幸いです。
+	  </p>
+	  <p><img src="/2ch-summary/ymotongpoo_gmail.png"/></p>
+	  <p>
+		<a href="http://d.hatena.ne.jp/ymotongpoo">開発者サイト</a>
+		|
+		<a href="http://twitter.com/ymotongpoo">Twitter</a>
+		|
+		<a href="http://b.hatena.ne.jp/entry/http://ymotongpoo.dip.jp/dokuo/">
+		  <img class="b_entry" src="http://b.hatena.ne.jp/images/help/entry.gif" width="16" height="12" alt="このエントリーを含むはてなブックマーク" title="このエントリーを含むはてなブックマーク" />
+		</a>
+		<img src="http://b.hatena.ne.jp/entry/image/http://ymotongpoo.dip.jp/dokuo/" alt="はてブ"/>
+	  </p>
+	</div>
+
+	<!-- Google Analytics -->
+	<script type="text/javascript">
+	  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+	  try {
+	  var pageTracker = _gat._getTracker("UA-6420772-2");
+	  pageTracker._trackPageview();
+	  } catch(err) {}
+	</script>
+  </body>
+</html>
