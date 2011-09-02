@@ -20,7 +20,17 @@ def pjax_index(query):
     p['static'] = True
     return render_template("index.html", p=p)
 
+@app.route('/hoge/')
+@app.route('/hoge/<title>')
+def show_title(title=None):
+  if title and title.startwith('#'):
+    return render_template("index.html", p=dict(placeholder=title[1:]))
+  else:
+    return render_template("index.html", p=dict(placeholder='no title'))
+  
+
 if __name__ == '__main__':
+  app.debug = True
   app.run(host='0.0.0.0', port=8888)
   
 
