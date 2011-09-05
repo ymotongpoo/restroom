@@ -9,8 +9,15 @@
 
 Yoshifumi YAMAGUCHI (@ymotongpoo)
 
+1. Directories
+==============
 
-1. License
+* 0x7d8
+
+  - codes for learning Python in 2008
+
+
+X. License
 ==========
 
 all codes under this repository is basically MIT License.
