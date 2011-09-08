@@ -1,9 +1,16 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import os.path
 from setuptools import setup, find_packages
 
-long_description = open('README.rst', 'rb').read()
+##### utility functions
+def read(name):
+  return open(os.path.join(os.path.dirname(__file__), name)).read()
+
+
+##### meta
+long_description = read('README.rst')
 
 version = '0.0'
 
@@ -24,11 +31,13 @@ classifiers=[
         'Topic :: Utilities',
     ]
 
+
+##### properties
 setup(
     name='webscraper',
     version=version,
     url='https://github.com/ymotongpoo/',
-    license='LGPL',
+    license='BSD',
     author='Yoshifumi YAMAGUCHI',
     author_email='ymotongpoo@gmall.com',
     description='a library for web scraping',
