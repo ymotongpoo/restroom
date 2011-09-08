@@ -3,6 +3,18 @@ import urllib2
 import gzip
 from StringIO import StringIO
 
+try:
+  from lxml import etree
+  htmlparser = etree.HTMLParser()
+  xmlparser = etree.XMLParser()
+  xmllib = 'lxml'
+except ImportError:
+  from xml.etree import ElementTree as etree
+  htmlparser = etree.HTMLParser()
+  xmlparser = xml.parse.expat.ParserCreate()
+  xmllib = 'standard'
+
+
 def urlread(url, headers={}, encoding=None, range=None,
             last_modified=None, last_etag=None):
   try:
@@ -31,3 +43,19 @@ def urlread(url, headers={}, encoding=None, range=None,
     
       
 
+def parse(source, type=None):
+  """parse HTML/XML source and returns element tree
+
+  :param: source : HTML/XML source
+  :param: type : 'html' or 'xml'
+  """
+  if not type:
+    header = source.strip().split('\n')[0]
+    if 'xml' in header.lower():
+      parser = xmlparser
+    else:
+      parser = httpparser
+
+  tree = etree.parse(source, parser)
+  return tree
+  
