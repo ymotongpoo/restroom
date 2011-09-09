@@ -59,3 +59,26 @@ def parse(source, type=None):
   tree = etree.parse(source, parser)
   return tree
   
+
+def jquery_to_xpath(jquery):
+  """convert jQuery (CSS) style dom to XPath
+  """
+  paths = [convert_to_xapth(dom) for dom in jquery.split()]
+  print '//'.join(paths)
+
+  
+def convert_to_xpath(dom):
+  try:
+    xpath = ""
+    if dom == dom.split('.#'):
+      xpath = dom
+    else:
+      if '.' in dom:
+        tag, attr = dom.split('.')
+        xpath = "%s[@class=%s]" % (tag, attr)
+      elif '#' in dom:
+        tag, attr = dom.split('#')
+        xpath = "%s[@id=%s]" % (tag, attr)
+    return xpath
+  except ValueError, e:
+    raise ValueError, "Check if jQuery string is correct: %s" % dom
