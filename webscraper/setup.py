@@ -31,6 +31,17 @@ classifiers=[
         'Topic :: Utilities',
     ]
 
+requires = [
+  "lxml >= 2.3",
+]
+
+extras_require = dict(
+  test = [
+    "lxml >= 2.3",
+    "pytest >= 2.1.1"
+    ]
+)
+
 
 ##### properties
 setup(
@@ -42,13 +53,7 @@ setup(
     author_email='ymotongpoo@gmall.com',
     description='a library for web scraping',
     long_description=__doc__,
-    packages=['webscraper'],
-    install_requires=[
-        'setuptools',
-        ],
-    extras_require=dict(
-        test=[
-            'lxml>=2.3'
-            ],
-        ),
+    packages=find_packages(exclude=['test']),
+    install_requires=requires,
+    extras_require=extras_require,
 )

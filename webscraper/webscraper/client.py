@@ -2,6 +2,7 @@
 import urllib2
 import gzip
 from StringIO import StringIO
+import re
 
 try:
   from lxml import etree
@@ -17,6 +18,18 @@ except ImportError:
 
 def urlread(url, headers={}, encoding=None, range=None,
             last_modified=None, last_etag=None):
+  """
+  @param url: URL
+  @type  url: string
+  @param headers: HTTP headers
+  @type  headers: dict
+  @param encoding: expecting encoding of fetched data
+  @type  encoding: str
+  @param last_modified: date info which is available from Last-Modified header
+  @type  last_modified: str
+  @param last_etag: tag from ETag header
+  @type  last_etag: str
+  """
   try:
     if range:
       headers['Range'] = 'bytes= %s-' % str(range)
@@ -46,8 +59,12 @@ def urlread(url, headers={}, encoding=None, range=None,
 def parse(source, type=None):
   """parse HTML/XML source and returns element tree
 
-  :param: source : HTML/XML source
-  :param: type : 'html' or 'xml'
+  @param source: HTML/XML source
+  @type  source: str or StringIO
+  @param type: 'html' or 'xml'
+  @type  type: str
+  @return: root node of HTML/XML tree
+  @rtype: lxml.etree or xml.etree.ElementTree
   """
   if not type:
     header = source.strip().split('\n')[0]
@@ -58,27 +75,64 @@ def parse(source, type=None):
 
   tree = etree.parse(source, parser)
   return tree
-  
 
-def jquery_to_xpath(jquery):
-  """convert jQuery (CSS) style dom to XPath
+xpath_decendent_axis = '//'
+xpath_child_axis = '/'
+xpath_sibling_axis = '/following-sibling::'
+selector_separators = ['>', ',', '+'] # do not supporting ','
+
+def selector_to_xpath(selector):
+  """convert CSS selector to XPath. 
+
+  @param selector: CSS selector string
+  @type  selector: str
+  @return XPath which correspond to assigned CSS selector
+  @rtype str
   """
-  paths = [convert_to_xapth(dom) for dom in jquery.split()]
-  print '//'.join(paths)
+  selectors = selector.split()
+  paths = []
+  for s in selectors:
+    if s in selector_separators:
+      paths.append(s)
+    else:
+      paths.append(convert_to_xpath(s))
+
+  xpath = xpath_decendent_axis
+  decendents = []
+  for p in paths:
+    if p == '>':
+      xpath += xpath_decendent_axis.join(decendents)
+      xpath += xpath_child_axis
+      decendents = []
+    elif p == '+':
+      xpath += xpath_decendent_axis.join(decendents)
+      xpath += xpath_sibling_axis
+      decendents = []
+    else:
+      decendents.append(p)
+  xpath += xpath_decendent_axis.join(decendents)
+  return xpath
 
   
-def convert_to_xpath(dom):
+def convert_to_xpath(selector):
+  """convert a CSS selector token to a XPath piece
+
+  @param selector: CSS selector string
+  @type  selector: str
+  @return: XPath which correspond to assigned CSS selector
+  @rtype str
+  """
   try:
     xpath = ""
-    if dom == dom.split('.#'):
-      xpath = dom
+    if selector.find('#') == -1 and selector.find('.') == -1:
+      xpath = selector
     else:
-      if '.' in dom:
-        tag, attr = dom.split('.')
-        xpath = "%s[@class=%s]" % (tag, attr)
-      elif '#' in dom:
-        tag, attr = dom.split('#')
-        xpath = "%s[@id=%s]" % (tag, attr)
+      if '.' in selector:
+        tag, attr = selector.split('.')
+        xpath = '%s[@class="%s"]' % (tag, attr)
+      elif '#' in selector:
+        tag, attr = selector.split('#')
+        xpath = '%s[@id="%s"]' % (tag, attr)
     return xpath
   except ValueError, e:
-    raise ValueError, "Check if jQuery string is correct: %s" % dom
+    raise ValueError, "Check if CSS selector is correct: %s" % dom
