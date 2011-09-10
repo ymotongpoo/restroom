@@ -80,6 +80,12 @@ xpath_decendent_axis = '//'
 xpath_child_axis = '/'
 xpath_sibling_axis = '/following-sibling::'
 selector_separators = ['>', ',', '+'] # do not supporting ','
+selector_pred = re.compile('(?P<tag>[a-zA-Z]+)' +                  # tag
+                           '\[(?P<attr>[a-zA-Z]+)' +               # attribute
+                           '((?P<contain>~?)="(?P<value>.+)")?\]') # filter
+xpath_attr_only = '%(tag)s[@%(attr)s]'
+xpath_with_value = '%(tag)s[@%(attr)s="%(value)s"]'
+xpath_contain = '%(tag)s[contain(./@%(attr)s,"%(value)s")]'
 
 def selector_to_xpath(selector):
   """convert CSS selector to XPath. 
@@ -124,6 +130,16 @@ def convert_to_xpath(selector):
   """
   try:
     xpath = ""
+    m = selector_pred.match(selector) 
+    if m:
+      matched = m.groupdict()
+      if matched['value'] is None:
+        return xpath_attr_only % matched
+      elif matched['contain'] == '':
+        return xpath_with_value % matched
+      else:
+        return xpath_contain % matched
+
     if selector.find('#') == -1 and selector.find('.') == -1:
       xpath = selector
     else:
