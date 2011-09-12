@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import urllib2
 import gzip
-from StringIO import StringIO
+from cStringIO import StringIO
 import re
 
 try:
@@ -11,8 +11,9 @@ try:
   xmllib = 'lxml'
 except ImportError:
   from xml.etree import ElementTree as etree
-  htmlparser = etree.HTMLParser()
-  xmlparser = xml.parse.expat.ParserCreate()
+  import HTMLParser
+  htmlparser = HTMLParser()
+  xmlparser = etree.XMLParser()
   xmllib = 'standard'
 
 
@@ -60,7 +61,7 @@ def parse(source, type=None):
   """parse HTML/XML source and returns element tree
 
   @param source: HTML/XML source
-  @type  source: str or StringIO
+  @type  source: StringIO
   @param type: 'html' or 'xml'
   @type  type: str
   @return: root node of HTML/XML tree
@@ -71,7 +72,13 @@ def parse(source, type=None):
     if 'xml' in header.lower():
       parser = xmlparser
     else:
-      parser = httpparser
+      parser = htmlparser
+  elif type == 'html':
+    parser = htmlparser
+  elif type == 'xml':
+    parser = xmlparser
+  else:
+    raise ValueError("'type' must be 'xml' or 'html'")
 
   tree = etree.parse(source, parser)
   return tree
