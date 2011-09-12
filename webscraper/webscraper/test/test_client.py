@@ -15,4 +15,4 @@ def test_selector_to_xpath():
            '//a//foo[@class="bar"]//hoge[@id="piyo"]' )
   assert ( client.selector_to_xpath('a + foo.bar + hoge#piyo') ==
            '//a/following-sibling::foo[@class="bar"]/following-sibling::hoge[@id="piyo"]' )
-    
+

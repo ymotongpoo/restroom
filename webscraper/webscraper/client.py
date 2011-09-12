@@ -29,6 +29,8 @@ def urlread(url, headers={}, encoding=None, range=None,
   @type  last_modified: str
   @param last_etag: tag from ETag header
   @type  last_etag: str
+  @return tuple of unzipped data, HTTP headers and Content-Length of original data
+  @rtype (str, dict, int)
   """
   try:
     if range:
@@ -47,7 +49,8 @@ def urlread(url, headers={}, encoding=None, range=None,
       data = z.read()
       size = len(data)
     else:
-      size = headers['content-length']
+      if headers['content-length']:
+        size = int(headers['content-length'])
 
     return data, headers, size
 
@@ -56,25 +59,29 @@ def urlread(url, headers={}, encoding=None, range=None,
     
       
 
-def parse(source, type=None):
+def parse(source, xmllib=None):
   """parse HTML/XML source and returns element tree
 
   @param source: HTML/XML source
   @type  source: str or StringIO
-  @param type: 'html' or 'xml'
-  @type  type: str
-  @return: root node of HTML/XML tree
-  @rtype: lxml.etree or xml.etree.ElementTree
+  @param xmllib: 'html' or 'xml'
+  @type  xmllib: str
+  @return root node of HTML/XML tree
+  @rtype lxml.etree or xml.etree.ElementTree
   """
-  if not type:
+  if not xmllib:
     header = source.strip().split('\n')[0]
     if 'xml' in header.lower():
       parser = xmlparser
     else:
       parser = httpparser
+  elif xmllib == 'html':
+    
+    
 
   tree = etree.parse(source, parser)
   return tree
+
 
 xpath_decendent_axis = '//'
 xpath_child_axis = '/'
@@ -119,7 +126,7 @@ def convert_to_xpath(selector):
 
   @param selector: CSS selector string
   @type  selector: str
-  @return: XPath which correspond to assigned CSS selector
+  @return XPath which correspond to assigned CSS selector
   @rtype str
   """
   try:
