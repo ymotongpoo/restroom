@@ -26,7 +26,6 @@ def test_selector_to_xpath():
   assert ( client.selector_to_xpath('a[target="pee"] foo.bar + hoge#piyo') ==
            '//a[@target="pee"]//foo[@class="bar"]/following-sibling::hoge[@id="piyo"]' )
 
-
 def test_parse():
   test1 = os.path.join(data_dir, 'test1.html')
   try:
