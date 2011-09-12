@@ -33,6 +33,7 @@ classifiers=[
 
 requires = [
   "lxml >= 2.3",
+  "chardet >= 1.0.1"
 ]
 
 extras_require = dict(
