@@ -87,6 +87,28 @@ def parse(source, xmllib=None):
   return tree
 
 
+def select(tree, selector):
+  """select CSS selector specified elements from ElementTree
+
+  @param tree: ElementTree
+  @type  tree: xml.etree.ElementTree.ElementTree or lxml.etree
+  @param selector: CSS selector
+  @type  selector: str
+  @return elements from etree
+  @rtype list of DOM
+  """
+  xpath = selector_to_xpath(selector)
+
+  if xmllib == 'lxml':
+    elements = tree.xpath(xpath)
+  elif xmllib == 'standard':
+    elements = tree.findall(xpath)
+
+  return elements
+  
+
+
+
 xpath_decendent_axis = '//'
 xpath_child_axis = '/'
 xpath_sibling_axis = '/following-sibling::'
