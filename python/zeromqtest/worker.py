@@ -14,7 +14,7 @@ while True:
   message = receiver.recv()
   print "%s." % message
 
-  time.sleep(int(message) / 1000.0)
+  time.sleep(int(message) * 0.001)
   sender.send("")
 
 
