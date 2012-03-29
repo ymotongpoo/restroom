@@ -1,0 +1,12 @@
+{% block content %}
+    {% for r in res %}
+    <dl class="thread">
+      <dt>
+        {{ r.index }} :<a href="{{ r.mail }}">{{ r.name }}</a> : {{ r.date }} : {{ r.id }}
+      </dt>
+      <dd>
+		{{ r.comment }}
+	  <dd>
+    </dl>
+    {% endfor %}
+{% endblock %}

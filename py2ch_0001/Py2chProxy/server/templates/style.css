@@ -1,0 +1,26 @@
+* {
+  background-color: #efefef;
+  font-family: monospace;
+  color: black;
+}
+
+article {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+a:link { color: blue; }
+a:visited { color: #660099; }
+a:active { color: red; }
+
+h1.thread {
+  color: red;
+  font-size: larger;
+  font-weight: normal;
+  margin: -0.5em 0 0;
+}
+
+dl {
+  display: block;
+  text-align: left;
+}
