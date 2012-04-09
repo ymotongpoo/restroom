@@ -10,7 +10,11 @@ ipc_transport = "ipc://test.ipc"
 
 dict_transport = {
   'tcp': tcp_transport,
+<<<<<<< HEAD
   'ipc': ipc_transport,
+=======
+  'ipc': ipc_transport
+>>>>>>> 581b846aeaba68cdd40e8e94bd29207108b68c65
 }
 
 def server(transport):
