@@ -25,7 +25,7 @@ INTERVAL = 0.1
 # SQLite setting
 SQLITE_STORE = "pypi.db"
 INSERT_TEMPLATE = ("""insert into pypi values """ +
-                   """('%(name)s', '%(version)s', '%(url)s')""")
+                   """(':name', ':version', ':url')""")
 
 def init():
     if os.path.exists(SQLITE_STORE):
@@ -92,6 +92,7 @@ def sink():
 
     loop = ioloop.IOLoop.instance()
     loop.add_handler(sink, pull_handler, zmq.POLLIN)
+    loop.add_timeout(5.0, timeout_handler)
     loop.start()
 
 
@@ -103,24 +104,57 @@ def pkg_url_handler(sender, receiver, events):
     pkginfo = parse_pkginfo(data)
     sender.send_pyobj(pkginfo)
 
+def __parse_helper(li):
+    strong = li.xpath('./strong')[0].text
+    span = li.xpath('./span')[0].text
+
+    strong.lower()[:-1]
+
 
 def parse_pkginfo(source):
     tree = etree.parse(StringIO(source), etree.HTMLParser())
 
     # hard coding
     title_tag = tree.xpath("//title")[0].text.split()
-    name = title_tag[0]
-    version = title_tag[1]
-    url = PYPI_BASE_URL % ("/pypi/" + name)
+    name = title_tag[:-1].join(' ')
+    version = title_tag[-1]
+    additional_path = "/pypi/%s/%s" % (name, version)
+    url = PYPI_BASE_URL % additional_path
+    
+    ul = tree.xpath("//div[@id='content']/div[@class='section']/ul[@class='nodot']/li")
+    for li in ul:
+        
+        
     
     return dict(name=name, version=version, url=url)
+
+
+def main():
+    from multiprocessing import cpu_count, Process, Pool
+    max_process = 2 * cpu_count()
+
+    sinkp = Process(target=sink)
+    print "*** SINK START ***"
+    sinkp.start()
+    
+    for i in range(max_process):
+        workerp = Process(target=worker)
+        print "*** WORKER %d START ***" % i
+        workerp.start()
+    
+    ventilatorp = Process(target=ventilator)
+    print "*** VENTILATOR START"
+    ventilatorp.start()
+    ventilatorp.join()
+    
+    sinkp.join()
 
 
 if __name__ == '__main__':
     import argparse
     description = "PyPI data scraper"
     parser = argparse.ArgumentParser(description=description)
-    parser.add_argument('type', choices='vwsi')
+    parser.add_argument('type', choices='vwsim')
     
     class Prog:
         """dummy class for namespace"""
@@ -137,7 +171,8 @@ if __name__ == '__main__':
         'v': ventilator,
         'w': worker,
         's': sink,
-        'i': init
+        'i': init,
+        'm': main
         }
 
     process = process_type.get(prog.type, exec_error)
