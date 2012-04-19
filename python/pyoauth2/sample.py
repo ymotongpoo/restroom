@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from client import OAuth2AuthorizationFlow
+from pyoauth2.client import OAuth2AuthorizationFlow
 
 
 if __name__ == '__main__':
