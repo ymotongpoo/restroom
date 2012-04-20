@@ -151,6 +151,8 @@ def main():
 
 
 if __name__ == '__main__':
+
+
     import argparse
     description = "PyPI data scraper"
     parser = argparse.ArgumentParser(description=description)

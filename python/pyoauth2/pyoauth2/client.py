@@ -2,7 +2,9 @@
 
 __author__ = "Yoshifumi YAMAGUCHI <@ymotongpoo>"
 
-__all__ = ['OAuth2AuthenticationFlow']
+__all__ = ['OAuth2AuthenticationFlow',
+           'Storage',
+           'FileStorage']
 
 import requests
 
@@ -34,19 +36,39 @@ class Storage(object):
         pass
 
 
-class ShelveStorege(Storage):
+
+class FileStorage(Storage):
     """ Storage class using Shelve
     """
     def __init__(self, filename):
         Storage.__init__(self)
-        self.data = shelve.open(filename)
+        self.filename = filename
+        self.elements = [unicode(e) for e in self.elements]
 
+        
     def get(self):
-        return self.data[u'access_token']
+        with open(self.filename, 'rb') as f:
+            try:
+                data = json.load(f)
+                return data
+            except ValueError, e:
+                return None
 
+    
     def save(self, data):
+        fpr = open(self.filename, 'r+')
+        try:
+            stored_data = json.load(fpr)
+        except ValueError, e:
+            stored_data = {}
+        else:
+            fpr.close()
+        
         for e in self.elements:
-            self.data[e] = data[e]
+            stored_data[e] = data[e]
+        fpw = open(self.filename, 'w+')
+        json.dump(stored_data, fpw)
+        
             
 
 class OAuth2AuthorizationFlow(object):
@@ -134,7 +156,9 @@ class OAuth2AuthorizationFlow(object):
 
             r = requests.post(self.token_uri, params=request_param,
                               allow_redirects=True)
-            self.access_token = json.loads(r.text)
+            jsondata = json.loads(r.text)
+            self.access_token = jsondata
+            return self.access_token
 
         else:
             print "authorization code is required before getting accesss token"

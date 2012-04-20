@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from oauth2.client import OAuth2AuthorizationFlow, ShelveStorage
-
+from pyoauth2.client import OAuth2AuthorizationFlow, FileStorage
 
 if __name__ == '__main__':
     required_params = {
@@ -21,7 +20,7 @@ if __name__ == '__main__':
         'grant_type': "authorization_code",
         }
 
-    storage = ShelveStorege('foursquare.dat')
+    storage = FileStorage('foursquare.dat')
     credentials = storage.get()
     if credentials is None:
         flow = OAuth2AuthorizationFlow(required_params,
