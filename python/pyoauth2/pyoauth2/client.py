@@ -4,15 +4,16 @@ __author__ = "Yoshifumi YAMAGUCHI <@ymotongpoo>"
 
 __all__ = ['OAuth2AuthenticationFlow',
            'Storage',
-           'FileStorage']
+           'FileStorage', 
+           'OAuth2APIRequest']
 
 import requests
 
 from urllib import urlencode
 import json
 import os
+import os.path
 import webbrowser
-import shelve
 
 
 REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
@@ -47,12 +48,15 @@ class FileStorage(Storage):
 
         
     def get(self):
-        with open(self.filename, 'rb') as f:
-            try:
-                data = json.load(f)
-                return data
-            except ValueError, e:
-                return None
+        if os.path.exists(self.filename):
+            with open(self.filename, 'rb') as f:
+                try:
+                    data = json.load(f)
+                    return data
+                except ValueError, e:
+                    return None
+        else:
+            return None
 
     
     def save(self, data):
@@ -100,11 +104,10 @@ class OAuth2AuthorizationFlow(object):
         else:
             self._extra_token_params = {}
         
-        self.params = {}
-        self.params.update(kwargs)
-
-        if 'scope' in self.params:
-            self.scope = ' '.join(self.params['scope'])
+        if 'scope' in required_params.keys():
+            self.scope = ' '.join(required_params['scope'])
+        else:
+            self.scope = None
 
         self.authorization_code = None
         self.access_token = None
@@ -119,15 +122,15 @@ class OAuth2AuthorizationFlow(object):
             "redirect_uri": self.redirect_uri,
             }
 
+        if self.scope:
+            request_param['scope'] = self.scope
+
         if self._extra_auth_params:
             request_param.update(self._extra_auth_params)
 
-        params = urlencode(request_param)
         r = requests.get(self.auth_uri, params=request_param,
                          allow_redirects=False)
-        
-        url = r.headers.get('location')
-        print url
+        url = r.headers.get('location') 
         webbrowser.open_new_tab(url)
 
         authorization_code = raw_input("Code: ")
@@ -152,10 +155,12 @@ class OAuth2AuthorizationFlow(object):
                 request_param.update(self._extra_token_params)
 
             content_length = len(urlencode(request_param))
-            request_param['content-length'] = str(content_length)
-
+            headers = requests.defaults.defaults['base_headers']
+            headers['content-length'] = str(content_length)
+            print headers, request_param
             r = requests.post(self.token_uri, params=request_param,
                               allow_redirects=True)
+            #                  headers=headers, allow_redirects=True)
             jsondata = json.loads(r.text)
             self.access_token = jsondata
             return self.access_token
@@ -165,6 +170,27 @@ class OAuth2AuthorizationFlow(object):
             print "Please call retrieve_authorization_code() beforehand"
 
 
-
     def validate_code(self, code):
         return True
+
+
+
+class OAuth2APIRequest(object):
+    """ Base class for OAuth 2.0 API request
+    """
+    def __init__(self, access_token):
+        self.access_token = access_token
+        self.authorization_header = {
+            "Authorization": "OAuth %s" % self.access_token
+            }
+
+    def request(self, url, extra_headers={}):
+        headers = extra_headers
+        headers.update(self.authorization_header)
+
+        content_length = len(urlencode(headers))
+        headers['content-length'] = str(content_length)
+        print headers
+
+        r = requests.get(url, headers=headers)
+        return r.text
