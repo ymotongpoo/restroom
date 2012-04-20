@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from client import OAuth2AuthorizationFlow
+from oauth2.client import OAuth2AuthorizationFlow, ShelveStorage
 
 
 if __name__ == '__main__':
@@ -14,14 +14,22 @@ if __name__ == '__main__':
 
     extra_auth_params = {
         'response_type': "code",
+        'access_type': "offline"
         }
 
     extra_token_params = {
         'grant_type': "authorization_code",
         }
 
-    flow = OAuth2AuthorizationFlow(required_params)
-    flow.retrieve_authorization_code()
-    flow.retrieve_token()
-    print flow.access_token
+    storage = ShelveStorege('foursquare.dat')
+    credentials = storage.get()
+    if credentials is None:
+        flow = OAuth2AuthorizationFlow(required_params,
+                                   extra_auth_params,
+                                   extra_token_params)
+        flow.retrieve_authorization_code()
+        credentials = flow.retrieve_token()
+        storage.save(credentials)
+    
+    print credentials
     
