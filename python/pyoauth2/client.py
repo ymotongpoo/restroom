@@ -10,15 +10,44 @@ from urllib import urlencode
 import json
 import os
 import webbrowser
-try:
-    import cPickle as Pickle
-except Exception:
-    import Pickle
+import shelve
 
 
 REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
 
+class Storage(object):
+    """ Base storage class for storing credentials
+    """
+    def __init__(self):
+        self.elements = [
+            'access_token',
+            ]
+    
+    def get(self):
+        """ Return access token
+        """
+        pass
 
+    def save(self, data):
+        """ Store access token into storage
+        """
+        pass
+
+
+class ShelveStorege(Storage):
+    """ Storage class using Shelve
+    """
+    def __init__(self, filename):
+        Storage.__init__(self)
+        self.data = shelve.open(filename)
+
+    def get(self):
+        return self.data[u'access_token']
+
+    def save(self, data):
+        for e in self.elements:
+            self.data[e] = data[e]
+            
 
 class OAuth2AuthorizationFlow(object):
     """ OAuth 2.0 authorization class
@@ -39,12 +68,12 @@ class OAuth2AuthorizationFlow(object):
         self.token_uri = required_params['token_uri']
         self.redirect_uri = required_params['redirect_uri']
 
-        if extra_auth_params:
+        if isinstance(extra_auth_params, dict):
             self._extra_auth_params = extra_auth_params
         else:
             self._extra_auth_params = {}
 
-        if extra_token_params:
+        if isinstance(extra_token_params, dict):
             self._extra_token_params = extra_token_params
         else:
             self._extra_token_params = {}
@@ -66,8 +95,6 @@ class OAuth2AuthorizationFlow(object):
         request_param = {
             "client_id": self.client_id,
             "redirect_uri": self.redirect_uri,
-            "response_type": self._extra_token_params.get('response_type', "code"),
-            "access_type": 'offline'
             }
 
         if self._extra_auth_params:
@@ -96,8 +123,7 @@ class OAuth2AuthorizationFlow(object):
                 "client_id": self.client_id,
                 "client_secret": self.client_secret,
                 "redirect_uri": self.redirect_uri,
-                "code": self.authorization_code,
-                "grant_type": 'authorization_code'
+                "code": self.authorization_code
                 }
 
             if self._extra_token_params:
@@ -106,8 +132,8 @@ class OAuth2AuthorizationFlow(object):
             content_length = len(urlencode(request_param))
             request_param['content-length'] = str(content_length)
 
-            r = requests.get(self.token_uri, params=request_param,
-                             allow_redirects=True)
+            r = requests.post(self.token_uri, params=request_param,
+                              allow_redirects=True)
             self.access_token = json.loads(r.text)
 
         else:
