@@ -37,7 +37,6 @@ class Storage(object):
         pass
 
 
-
 class FileStorage(Storage):
     """ Storage class using Shelve
     """
@@ -60,13 +59,15 @@ class FileStorage(Storage):
 
     
     def save(self, data):
-        fpr = open(self.filename, 'r+')
-        try:
-            stored_data = json.load(fpr)
-        except ValueError, e:
-            stored_data = {}
-        else:
-            fpr.close()
+        stored_data = {}
+        if os.path.exists(self.filename):
+            fpr = open(self.filename, 'r+')
+            try:
+                stored_data = json.load(fpr)
+            except ValueError, e:
+                raise ValueError(e)
+            else:
+                fpr.close()
         
         for e in self.elements:
             stored_data[e] = data[e]
@@ -112,6 +113,8 @@ class OAuth2AuthorizationFlow(object):
         self.authorization_code = None
         self.access_token = None
 
+        self.base_headers = requests.defaults.defaults['base_headers']
+
 
     def retrieve_authorization_code(self):
         """ retrieve authorization code to get access token
@@ -151,16 +154,19 @@ class OAuth2AuthorizationFlow(object):
                 "code": self.authorization_code
                 }
 
+            print request_param, urlencode(request_param)
+
             if self._extra_token_params:
                 request_param.update(self._extra_token_params)
 
             content_length = len(urlencode(request_param))
-            headers = requests.defaults.defaults['base_headers']
-            headers['content-length'] = str(content_length)
-            print headers, request_param
-            r = requests.post(self.token_uri, params=request_param,
-                              allow_redirects=True)
-            #                  headers=headers, allow_redirects=True)
+            headers = {
+                'Content-Length': str(content_length),
+                'Content-Type': 'application/x-www-form-urlencoded'
+                }
+        
+            r = requests.post(self.token_uri, data=request_param,
+                              headers=headers)
             jsondata = json.loads(r.text)
             self.access_token = jsondata
             return self.access_token
@@ -181,16 +187,17 @@ class OAuth2APIRequest(object):
     def __init__(self, access_token):
         self.access_token = access_token
         self.authorization_header = {
-            "Authorization": "OAuth %s" % self.access_token
+            "Authorization": "OAuth %s" % str(self.access_token)
             }
 
     def request(self, url, extra_headers={}):
-        headers = extra_headers
+        headers = {}
         headers.update(self.authorization_header)
+        headers.update(extra_headers)
 
-        content_length = len(urlencode(headers))
-        headers['content-length'] = str(content_length)
-        print headers
+        params = {
+            "oauth_token": self.access_token
+            }
 
-        r = requests.get(url, headers=headers)
+        r = requests.get(url, params=params, headers=headers)
         return r.text
