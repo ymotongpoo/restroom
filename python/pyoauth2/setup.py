@@ -25,9 +25,10 @@ setup(
     author='Yoshifumi YAMAGUCHI',
     author_email='ymotongpoo@gmall.com',
     description='Simple OAuth 2.0 client library',
-    long_description=__doc__,
+    long_description=long_description,,
     packages=['pyoauth2'],
     package_data={},
+    classifiers=classifiers,
     install_requires=[
         'setuptools',
         'requests>=0.11.1'
