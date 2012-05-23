@@ -1,8 +1,0 @@
-include MANIFEST.in
-include CHANGES
-include COPYING
-include COPYING.LESSER
-recursive-include docs *
-recursive-exclude docs/build *
-recursive-exclude py2ch *.pyc
-recursive-exclude py2ch *.pyo
