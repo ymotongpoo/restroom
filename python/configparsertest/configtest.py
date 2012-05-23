@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+http://www.python.jp/doc/release/library/configparser.html
+"""
 
 import ConfigParser
 
@@ -13,3 +16,4 @@ print config.getint('test2', 'foo')
 print config.getfloat('test2', 'bar')
 print config.getboolean('test2', 'buz')
 
+print config.sections()
