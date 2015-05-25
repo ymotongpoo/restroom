@@ -10,7 +10,7 @@
 Yoshifumi YAMAGUCHI (@ymotongpoo)
 
 
-2. License
+1. License
 ==========
 
 APL2.0. See LICENSE file.
