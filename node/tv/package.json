@@ -19,6 +19,7 @@
   "author": "ymotongpoo",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@types/node": "^4.0.26-alpha",
     "del": "^2.2.1",
     "gulp-typescript": "^2.13.6"
   }

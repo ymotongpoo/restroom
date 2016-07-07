@@ -39,6 +39,7 @@ gulp.task('build', function() {
     return gulp.src(paths.ts.src.files)
       .pipe(ts({
           noImplicitAny: true,
+          moduleResolution: 'classic',
           out: 'main.js'
       }))
       .pipe(gulp.dest(paths.release.js.dir));

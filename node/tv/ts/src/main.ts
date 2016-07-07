@@ -13,4 +13,20 @@
 //    limitations under the License.
 'use strict';
 
-console.log('hello, tv');
+import os = require('os');
+
+class Main {
+    name: string;
+
+    constructor(name: string) {
+        this.name = name;
+    }
+
+    main() {
+        console.log('hello, ' + this.name + ' on ' + os.arch());
+    }
+}
+
+const main = new Main('ts sample');
+main.main();
+
