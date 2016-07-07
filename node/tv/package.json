@@ -1,0 +1,25 @@
+{
+  "name": "tv",
+  "version": "1.0.0",
+  "description": "sample code to run tsc via gulp",
+  "main": "ts/main.ts",
+  "scripts": {
+    "build": "gulp build",
+    "clean": "gulp clean",
+    "start": "node release/js/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ymotongpoo/restroom/node/tv"
+  },
+  "keywords": [
+    "ts"
+  ],
+  "author": "ymotongpoo",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "del": "^2.2.1",
+    "gulp-typescript": "^2.13.6"
+  }
+}
