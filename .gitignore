@@ -9,4 +9,5 @@ env
 env*
 dist
 .svn
+node_modules
 

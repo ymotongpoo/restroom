@@ -11,9 +11,9 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-'use strict';
+"use strict";
 
-import os = require('os');
+import os = require("os");
 
 class Main {
     name: string;
@@ -23,10 +23,10 @@ class Main {
     }
 
     main() {
-        console.log('hello, ' + this.name + ' on ' + os.arch());
+        console.log("hello, " + this.name + " on " + os.arch());
     }
 }
 
-const main = new Main('ts sample');
+const main = new Main("ts sample");
 main.main();
 

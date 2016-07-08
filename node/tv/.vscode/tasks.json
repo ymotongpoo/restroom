@@ -6,46 +6,45 @@
     "isShellCommand": true,
     "showOutput": "always",
     "suppressTaskName": true,
-    "tasks": [
-        {
-            "taskName": "test",
-            "args": [
-                "run",
-                "test"
-            ]
-        },
-        {
-            "taskName": "build",
-            "args": [
-                "run",
-                "build"
-            ]
-        },
-        {
-            "taskName": "run",
-            "args": [
-                "run",
-                "start"
-            ]
-        },
-        {
-            "taskName": "clean",
-            "args": [
-                "run",
-                "cleane"
-            ]
-        },
-        {
-            "taskName": "install",
-            "args": [
-                "install"
-            ]
-        },
-        {
-            "taskName": "update",
-            "args": [
-                "update"
-            ]
-        }
-    ]
+    "tasks": [{
+        "taskName": "test",
+        "args": [
+            "run",
+            "test"
+        ]
+    }, {
+        "taskName": "lint",
+        "args": [
+            "run",
+            "lint"
+        ]
+    }, {
+        "taskName": "build",
+        "args": [
+            "run",
+            "build"
+        ]
+    }, {
+        "taskName": "run",
+        "args": [
+            "run",
+            "start"
+        ]
+    }, {
+        "taskName": "clean",
+        "args": [
+            "run",
+            "cleane"
+        ]
+    }, {
+        "taskName": "install",
+        "args": [
+            "install"
+        ]
+    }, {
+        "taskName": "update",
+        "args": [
+            "update"
+        ]
+    }]
 }

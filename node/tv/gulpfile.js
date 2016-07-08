@@ -16,8 +16,8 @@
 
 var gulp = require('gulp');
 var del = require('del');
-var path = require('path');
 var ts = require('gulp-typescript');
+var tslint = require('gulp-tslint');
 
 var paths = {
     ts: {
@@ -38,12 +38,18 @@ var paths = {
     }
 };
 
-gulp.task('build', function() {
+gulp.task('build', ['clean'], function() {
     return gulp.src(paths.ts.src.files)
-      .pipe(ts())
-      .pipe(gulp.dest(paths.release.js.dir));
+        .pipe(ts())
+        .pipe(gulp.dest(paths.release.js.dir));
 });
 
 gulp.task('clean', function() {
     return del(paths.release.dir);
+});
+
+gulp.task('lint', function() {
+    return gulp.src(paths.ts.src.files)
+        .pipe(tslint())
+        .pipe(tslint.report('verbose'));
 });
