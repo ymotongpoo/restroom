@@ -24,7 +24,10 @@ var paths = {
         dir: 'ts',
         src: {
             dir: 'ts/src',
-            files: 'ts/src/**/*.ts'
+            files: [
+                './ts/src/**/*.ts',
+                '!./node_modules/**'
+            ],
         }
     },
     release: {
@@ -37,11 +40,7 @@ var paths = {
 
 gulp.task('build', function() {
     return gulp.src(paths.ts.src.files)
-      .pipe(ts({
-          noImplicitAny: true,
-          moduleResolution: 'classic',
-          out: 'main.js'
-      }))
+      .pipe(ts())
       .pipe(gulp.dest(paths.release.js.dir));
 });
 
