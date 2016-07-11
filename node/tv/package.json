@@ -1,29 +1,31 @@
 {
-    "name": "tv",
-    "version": "1.0.0",
-    "description": "sample code to run tsc via gulp",
-    "main": "ts/main.ts",
-    "scripts": {
-        "build": "gulp build",
-        "clean": "gulp clean",
-        "lint": "gulp lint",
-        "start": "node release/js/main.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ymotongpoo/restroom/node/tv"
-    },
-    "keywords": [
-        "ts"
-    ],
-    "author": "ymotongpoo",
-    "license": "Apache-2.0",
-    "devDependencies": {
-        "@types/node": "^4.0.26-alpha",
-        "del": "^2.2.1",
-        "gulp-tslint": "^5.0.0",
-        "gulp-typescript": "^2.13.6",
-        "tslint": "^3.13.0"
-    }
+  "name": "tv",
+  "version": "1.0.0",
+  "description": "sample code to run tsc via gulp",
+  "main": "ts/main.ts",
+  "scripts": {
+    "build": "gulp build",
+    "clean": "gulp clean",
+    "lint": "gulp lint",
+    "start": "node release/js/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ymotongpoo/restroom/node/tv"
+  },
+  "keywords": [
+    "ts"
+  ],
+  "author": "ymotongpoo",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/moment": "^2.11.26-alpha",
+    "@types/node": "^4.0.26-alpha",
+    "del": "^2.2.1",
+    "gulp-tslint": "^5.0.0",
+    "gulp-typescript": "^2.13.6",
+    "moment": "^2.14.1",
+    "tslint": "^3.13.0"
+  }
 }

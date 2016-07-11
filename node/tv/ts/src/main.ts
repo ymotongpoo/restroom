@@ -13,20 +13,25 @@
 //    limitations under the License.
 "use strict";
 
-import os = require("os");
+import moment = require("moment");
+import http = require("http");
+import { Controller } from "./controller";
 
 class Main {
-    name: string;
+    private now: moment.Moment;
+    private controller: Controller;
 
-    constructor(name: string) {
-        this.name = name;
+    constructor() {
+        this.now = moment().locale('jp');
+        this.controller = new Controller();
     }
 
     main() {
-        console.log("hello, " + this.name + " on " + os.arch());
+        const body = this.controller.call("terrestrial", this.now);
+        console.log(body);
     }
 }
 
-const main = new Main("ts sample");
+const main = new Main();
 main.main();
 
