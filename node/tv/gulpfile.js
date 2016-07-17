@@ -27,7 +27,7 @@ var paths = {
             files: [
                 './ts/src/**/*.ts',
                 '!./node_modules/**'
-            ],
+            ]
         }
     },
     release: {
