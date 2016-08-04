@@ -1,0 +1,36 @@
+{
+    "name": "browserify-ts",
+    "version": "0.0.1",
+    "description": "test project to confirm how to use browserify with TypeScript",
+    "main": "main.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "gulp build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ymotongpoo/restroom.git"
+    },
+    "keywords": [
+        "chrome"
+    ],
+    "author": "Yoshi Yamaguchi (ymotongpoo)",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/ymotongpoo/restroom/issues"
+    },
+    "homepage": "https://github.com/ymotongpoo/restroom#readme",
+    "devDependencies": {
+        "@types/moment": "^2.11.29",
+        "browserify": "^13.1.0",
+        "eslint": "^3.2.2",
+        "gulp": "^3.9.1",
+        "gulp-watch": "^4.3.9",
+        "tsify": "^1.0.3",
+        "vinyl-source-stream": "^1.1.0"
+    },
+    "dependencies": {
+        "@types/moment": "^2.11.29",
+        "browserify": "^13.1.0"
+    }
+}
